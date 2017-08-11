@@ -130,8 +130,9 @@ The output will look similar to the following
 
     Available tasks:
 
-    sslcerts config # Reads, updates or deletes Sslcerts config
-    sslcerts init   # Initialize your sslcerts config
+    sslcerts config  # Reads, updates or deletes Sslcerts config
+    sslcerts init    # Initialize your sslcerts config
+    sslcerts install # Generate certbot certificate on your server
 
     Further information can be found here:
       -- https://hex.pm/packages/sslcerts
