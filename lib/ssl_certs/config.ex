@@ -17,18 +17,21 @@ defmodule Sslcerts.Config do
 
   And the output should look similar to:
 
-      host: "namedb.org"
+      domains: ["FILL_ME_IN.com"]
+      email: "YOUR_EMAIL_HERE"
+      ini: "/etc/letsencrypt/letsencrypt.ini"
+      keysize: 4096
 
   You can achieve similar behvarious through an iEX session `iex -S mix`
 
       Sslcerts.Config.init
       "/Users/aforward/.sslcerts"
 
-      Sslcerts.Config.put(:host, "namedb.org")
+      Sslcerts.Config.put(:domains, ["namedb.org"])
       :ok
 
       Sslcerts.Config.read
-      %{host: "namedb.org"}
+      %{domains: ["namedb.org"]}
 
   The information above is cached in the Sslcerts.Worker, so if you are making changes
   in iEX, you can reload your configs using
@@ -39,7 +42,7 @@ defmodule Sslcerts.Config do
   And you can see the currently cached values with
 
       Sslcerts.config
-      %{host: "namedb.org"}
+      %{domains: ["namedb.org"]}
 
   The order of preference for locating the appropriate configs are
 
@@ -48,7 +51,7 @@ defmodule Sslcerts.Config do
 
       #2 Elixir built in Mix.Config
       use Mix.Config
-      config :sslcerts, config:  %{host: "mysite.local"}
+      config :sslcerts, config:  %{domains: ["mysite.local"]}
 
       #3 A file within "myproject" called .sslcerts
       /src/myproject/.sslcerts
@@ -157,7 +160,10 @@ defmodule Sslcerts.Config do
 
   defp default_config do
     %{
-        host: "FILL_ME_IN.com",
+        email: "YOUR_EMAIL_HERE",
+        domains: ["FILL_ME_IN.com"],
+        ini: "/etc/letsencrypt/letsencrypt.ini",
+        keysize: 4096,
      }
   end
 

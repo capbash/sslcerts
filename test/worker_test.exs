@@ -12,14 +12,14 @@ defmodule Sslcerts.WorkerTest do
   end
 
   test "Store :config in worker" do
-    Application.put_env(:sslcerts, :config, %{host: "mysite.local"})
+    Application.put_env(:sslcerts, :config, %{domains: ["mysite.local"]})
     Sslcerts.reload
-    assert GenServer.call(Worker, :config) == %{host: "mysite.local"}
+    assert GenServer.call(Worker, :config) == %{domains: ["mysite.local"]}
 
-    Application.put_env(:sslcerts, :config, %{host: "mynewsite.local"})
-    assert GenServer.call(Worker, :config) == %{host: "mysite.local"}
+    Application.put_env(:sslcerts, :config, %{domains: ["mynewsite.local"]})
+    assert GenServer.call(Worker, :config) == %{domains: ["mysite.local"]}
 
     GenServer.call(Worker, :reload)
-    assert GenServer.call(Worker, :config) == %{host: "mynewsite.local"}
+    assert GenServer.call(Worker, :config) == %{domains: ["mynewsite.local"]}
   end
 end

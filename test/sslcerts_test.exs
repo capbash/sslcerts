@@ -15,15 +15,15 @@ defmodule SslcertsTest do
   end
 
   test "config (from worker)" do
-    Application.put_env(:sslcerts, :config, %{host: "mysite.local"})
+    Application.put_env(:sslcerts, :config, %{domains: ["mysite.local"]})
     Sslcerts.reload
-    assert Sslcerts.config == %{host: "mysite.local"}
+    assert Sslcerts.config == %{domains: ["mysite.local"]}
 
-    Application.put_env(:sslcerts, :config, %{host: "mynewsite.local"})
-    assert Sslcerts.config == %{host: "mysite.local"}
+    Application.put_env(:sslcerts, :config, %{domains: ["mynewsite.local"]})
+    assert Sslcerts.config == %{domains: ["mysite.local"]}
 
     Sslcerts.reload
-    assert Sslcerts.config == %{host: "mynewsite.local"}
+    assert Sslcerts.config == %{domains: ["mynewsite.local"]}
   end
 
 end

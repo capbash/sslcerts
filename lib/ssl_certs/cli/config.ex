@@ -9,7 +9,11 @@ defmodule Sslcerts.Cli.Config do
 
   ## Config keys
 
-    * `host` - The host you are trying to secure (e.g. mysite.com)
+    * `email`   - The email associated with the certificate
+    * `domains` - The domains you are certifying
+    * `webroot` - The root of your static assets to allow certbot to confirm it's your domain
+    * `ini`     - The path of the certbot configs (defaults to /etc/letsencrypt/letsencrypt.ini)
+    * `keysize` - The size of the certificate key (defaults to 4096)
 
   ## Command line options
 
@@ -33,10 +37,9 @@ defmodule Sslcerts.Cli.Config do
         else
           read(key)
         end
-      [key, value] ->
-        set(key, value)
-      [key | values] ->
-        set(key, values)
+      ["domains" | values] -> set("domains", values)
+      [key, value] -> set(key, value)
+      [key | values] -> set(key, values)
       _ ->
         Shell.raise """
         Invalid arguments, expected:

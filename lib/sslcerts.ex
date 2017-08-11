@@ -115,7 +115,10 @@ defmodule Sslcerts do
 
   And the output should look similar to:
 
-      host: "namedb.org"
+      domains: ["FILL_ME_IN.com"]
+      email: "YOUR_EMAIL_HERE"
+      ini: "/etc/letsencrypt/letsencrypt.ini"
+      keysize: 4096
 
   ## Available Commands / Tasks
 
@@ -163,7 +166,8 @@ defmodule Sslcerts do
   you can access the same information in Elixir.
 
       iex> Sslcerts.config
-      %{token: "FILL_ME_IN.com"}
+      %{email: "YOUR_EMAIL_HERE",
+        domains: ["FILL_ME_IN.com"]}
 
   This is the first release, which just manages the configs.  Concrete implemetation
   (and supporting documentation) coming soon.

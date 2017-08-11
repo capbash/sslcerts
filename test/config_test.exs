@@ -5,7 +5,11 @@ defmodule Sslcerts.ConfigTest do
   alias Sslcerts.Config
 
   @filename "/tmp/here/.sslcerts"
-  @default_config %{host: "FILL_ME_IN.com"}
+  @default_config %{
+    email: "YOUR_EMAIL_HERE",
+    domains: ["FILL_ME_IN.com"],
+    ini: "/etc/letsencrypt/letsencrypt.ini",
+    keysize: 4096}
 
   setup do
     on_exit fn ->
@@ -37,7 +41,7 @@ defmodule Sslcerts.ConfigTest do
 
   test "filename (Application ENV)" do
     File.touch(".sslcerts")
-    Application.put_env(:sslcerts, :config, %{host: "mysite.local"})
+    Application.put_env(:sslcerts, :config, %{domains: ["mysite.local"]})
     assert Config.filename == :config
   end
 
@@ -56,9 +60,9 @@ defmodule Sslcerts.ConfigTest do
   end
 
   test "init (Application :config -- do nothing)" do
-    Application.put_env(:sslcerts, :config, %{host: "mysite.local"})
+    Application.put_env(:sslcerts, :config, %{domains: ["mysite.local"]})
     Config.init
-    assert %{host: "mysite.local"} == Config.read
+    assert %{domains: ["mysite.local"]} == Config.read
   end
 
   test "reinit (file exists -- overwrite)" do
@@ -69,37 +73,37 @@ defmodule Sslcerts.ConfigTest do
   end
 
   test "reinit (Application :config -- do nothing)" do
-    Application.put_env(:sslcerts, :config, %{host: "mysite.local"})
+    Application.put_env(:sslcerts, :config, %{domains: ["mysite.local"]})
     Config.reinit
-    assert %{host: "mysite.local"} == Config.read
+    assert %{domains: ["mysite.local"]} == Config.read
   end
 
   test "edit configs" do
     @filename |> Config.init
 
-    :ok = Config.put(@filename, :host, "MY_NEW_SITE.local")
-    assert "MY_NEW_SITE.local" == Config.get(@filename, :host)
-    assert my_config(%{host: "MY_NEW_SITE.local"}) == Config.read(@filename)
+    :ok = Config.put(@filename, :domains, ["MY_NEW_SITE.local", "dev.MY_NEW_SITE.local"])
+    assert ["MY_NEW_SITE.local", "dev.MY_NEW_SITE.local"] == Config.get(@filename, :domains)
+    assert my_config(%{domains: ["MY_NEW_SITE.local", "dev.MY_NEW_SITE.local"]}) == Config.read(@filename)
 
     assert nil == Config.get(@filename, :apples)
 
-    :ok = Config.put(@filename, :ssh_keys, ["abc", "def"])
-    assert ["abc", "def"] == Config.get(@filename, :ssh_keys)
-    assert my_config(%{ssh_keys: ["abc", "def"], host: "MY_NEW_SITE.local"}) == Config.read(@filename)
+    :ok = Config.put(@filename, :email, "my_new_email")
+    assert "my_new_email" == Config.get(@filename, :email)
+    assert my_config(%{email: "my_new_email", domains: ["MY_NEW_SITE.local", "dev.MY_NEW_SITE.local"]}) == Config.read(@filename)
 
-    :ok = Config.remove(@filename, :ssh_keys)
-    assert nil == Config.get(@filename, :ssh_keys)
-    assert %{host: "MY_NEW_SITE.local"} == Config.read(@filename)
+    :ok = Config.remove(@filename, :email)
+    assert nil == Config.get(@filename, :email)
+    assert %{domains: ["MY_NEW_SITE.local", "dev.MY_NEW_SITE.local"], ini: "/etc/letsencrypt/letsencrypt.ini", keysize: 4096} == Config.read(@filename)
 
   end
 
   test "get (Application :config -- do nothing)" do
-    Application.put_env(:sslcerts, :config, %{host: "mysite.local", ssh_keys: ["ab1", "ab2"]})
-    assert ["ab1", "ab2"] == Config.get(:config, :ssh_keys)
-    assert %{host: "mysite.local", ssh_keys: ["ab1", "ab2"]} == Config.read(:config)
+    Application.put_env(:sslcerts, :config, %{domains: ["mysite.local"], email: "myemail"})
+    assert "myemail" == Config.get(:config, :email)
+    assert %{domains: ["mysite.local"], email: "myemail"} == Config.read(:config)
 
-    assert ["ab1", "ab2"] == Config.get(:ssh_keys)
-    assert %{host: "mysite.local", ssh_keys: ["ab1", "ab2"]} == Config.read
+    assert "myemail" == Config.get(:email)
+    assert %{domains: ["mysite.local"], email: "myemail"} == Config.read
   end
 
   defp my_config(changes), do: Map.merge(@default_config, changes)
