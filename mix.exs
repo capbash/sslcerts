@@ -4,7 +4,7 @@ defmodule Sslcerts.Mixfile do
   @app :sslcerts
   @git_url "https://github.com/capbash/sslcerts"
   @home_url @git_url
-  @version "0.1.1"
+  @version "0.1.2"
 
   @deps [
     {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
