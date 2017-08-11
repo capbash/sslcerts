@@ -18,8 +18,10 @@ defmodule Sslcerts.Cli.Main do
     # Run `mix help --search sslcerts.` to get this output
     # and paste here, replacing `mix sslcerts.` with just `sslcerts `
     Shell.info "#{Shell.cmd("sslcerts config")}  # Reads, updates or deletes Sslcerts config"
+    Shell.info "#{Shell.cmd("sslcerts create")}  # Create a new certificate"
     Shell.info "#{Shell.cmd("sslcerts init")}    # Initialize your sslcerts config"
-    Shell.info "#{Shell.cmd("sslcerts install")} # Generate certbot certificate on your server"
+    Shell.info "#{Shell.cmd("sslcerts install")} # Install / Initialize your server to generate SSL certs"
+    Shell.info "#{Shell.cmd("sslcerts renew")}   # Renew an existing certificate"
 
     Shell.newline
 
@@ -34,6 +36,7 @@ defmodule Sslcerts.Cli.Main do
   def run({:init, args}), do: Sslcerts.Cli.Init.run(args)
   def run({:install, args}), do: Sslcerts.Cli.Install.run(args)
   def run({:create, args}), do: Sslcerts.Cli.Create.run(args)
+  def run({:renew, args}), do: Sslcerts.Cli.Renew.run(args)
   def run({unknown_cmd, _args}) do
     Shell.error "Unknown command, #{unknown_cmd}, check spelling and try again"
     Shell.newline

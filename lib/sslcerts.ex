@@ -138,8 +138,10 @@ defmodule Sslcerts do
       Available tasks:
 
       sslcerts config  # Reads, updates or deletes Sslcerts config
+      sslcerts create  # Create a new certificate
       sslcerts init    # Initialize your sslcerts config
-      sslcerts install # Generate certbot certificate on your server
+      sslcerts install # Install / Initialize your server to generate SSL certs
+      sslcerts renew   # Renew an existing certificate
 
       Further information can be found here:
         -- https://hex.pm/packages/sslcerts

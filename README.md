@@ -134,8 +134,10 @@ The output will look similar to the following
     Available tasks:
 
     sslcerts config  # Reads, updates or deletes Sslcerts config
+    sslcerts create  # Create a new certificate
     sslcerts init    # Initialize your sslcerts config
-    sslcerts install # Generate certbot certificate on your server
+    sslcerts install # Install / Initialize your server to generate SSL certs
+    sslcerts renew   # Renew an existing certificate
 
     Further information can be found here:
       -- https://hex.pm/packages/sslcerts
@@ -146,7 +148,7 @@ they are just structured slightly differently.
 
 In general,
 
-* `mix sslcerts.<sub command> <options> <args>` for mix tasks
+* `    sslcerts <sub command> <options> <args>` for mix tasks
 * `sslcerts <sub command> <options> <args>` for escript
 
 Make sure that have installed sslcerts correctly for mix tasks (if you want to use mix
