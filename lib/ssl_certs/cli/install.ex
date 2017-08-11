@@ -50,6 +50,7 @@ defmodule Sslcerts.Cli.Install do
 
   def install_script({opts, ["bits"]}) do
     {_, 0} = System.cmd("curl", ["-s", "https://raw.githubusercontent.com/capbash/bits/master/bits-installer", "-o", "/tmp/bits-installer.sh"])
+    File.chmod("/tmp/bits-installer.sh", 755)
     System.cmd("/tmp/bits-installer.sh", [])
     |> shell_info(opts)
   end
