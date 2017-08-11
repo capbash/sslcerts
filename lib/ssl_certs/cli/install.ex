@@ -23,6 +23,8 @@ defmodule Sslcerts.Cli.Install do
     * `--email`     The email associated with the certificate
     * `--domains`   The domains you are certifying
     * `--webroot`   The root of your static assets to allow certbot to confirm it's your domain
+    * `--ini`       The path of the certbot configs (defaults to /etc/letsencrypt/letsencrypt.ini)
+    * `--keysize`   The size of the certificate key (defaults to 4096)
 
   """
 
@@ -30,6 +32,8 @@ defmodule Sslcerts.Cli.Install do
     email: :string,
     domains: :list,
     webroot: :string,
+    ini: :string,
+    keysize: :integer,
   }
 
   def run(raw_args) do
@@ -50,19 +54,26 @@ defmodule Sslcerts.Cli.Install do
     |> shell_info(opts)
   end
 
-  def install_script({%{email: email, domains: domains, webroot: webroot} = opts, ["certbot"]}) do
+  def install_script({%{email: email, domains: domains, webroot: webroot, ini: ini, keysize: keysize} = opts, ["certbot"]}) do
     System.cmd("bits", ["install-if", "certbot"])
     |> shell_info(opts)
 
-    System.cmd(
-      "bits",
-      ["install", "certbotcert"],
-      env: %{"EMAIL" => email,
-             "DOMAINS" => domains |> Enum.join(","),
-             "WEBROOT" => webroot})
-    |> shell_info(opts)
+    :ok = ini |> Path.expand |> Path.dirname |> File.mkdir_p!
+
+    ini
+    |> Path.expand
+    |> File.write!("""
+rsa-key-size = #{keysize}
+email = #{email}
+domains = #{domains |> Enum.join(" ")}
+text = True
+authenticator = webroot
+preferred-challenges = http-01
+webroot-path = #{webroot}
+       """)
+
+    Shell.info("Updated certbot #{ini}")
   end
 
   def shell_info({output, _}, opts), do: Shell.info(output, opts)
-
 end

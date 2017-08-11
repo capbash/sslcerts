@@ -33,6 +33,7 @@ defmodule Sslcerts.Cli.Main do
   def run({:config, args}), do: Sslcerts.Cli.Config.run(args)
   def run({:init, args}), do: Sslcerts.Cli.Init.run(args)
   def run({:install, args}), do: Sslcerts.Cli.Install.run(args)
+  def run({:create, args}), do: Sslcerts.Cli.Create.run(args)
   def run({unknown_cmd, _args}) do
     Shell.error "Unknown command, #{unknown_cmd}, check spelling and try again"
     Shell.newline
