@@ -82,7 +82,7 @@ add a dependency to your `mix.exs` file.
 
 ```elixir
 @deps [
-  sslcerts: "~> 0.1.2"
+  sslcerts: "~> 0.2.0"
 ]
 ```
 
