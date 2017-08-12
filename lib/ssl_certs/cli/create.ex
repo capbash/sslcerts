@@ -20,6 +20,7 @@ defmodule Sslcerts.Cli.Create do
     * `--webroot`   The root of your static assets to allow certbot to confirm it's your domain
     * `--ini`       The path of the certbot configs (defaults to /etc/letsencrypt/letsencrypt.ini)
     * `--keysize`   The size of the certificate key (defaults to 4096)
+    * `--post-hook` The script to run after a successful renewal (See `--post-hook` in certbot)
 
   """
 
@@ -29,6 +30,7 @@ defmodule Sslcerts.Cli.Create do
     webroot: :string,
     ini: :string,
     keysize: :integer,
+    post_hook: :string,
   }
 
   def run(raw_args) do
@@ -37,11 +39,12 @@ defmodule Sslcerts.Cli.Create do
 
     raw_args
     |> Parser.parse(@options)
-    |> invoke(fn {%{ini: ini}, []} ->
+    |> invoke(fn {%{ini: ini, post_hook: post_hook, domains: domains}, []} ->
          System.cmd(
            "certbot",
            ["certonly",
             "--non-interactive",
+            "--post-hook", post_hook || "touch /tmp/certbot.#{domains |> List.first}.created",
             "--config",
             ini])
        end)

@@ -6,16 +6,17 @@ defmodule Mix.Tasks.Sslcerts.Renew do
   @moduledoc"""
   Renew an existing certificate, if no cert exists then create one.
 
-      sslcerts renew
+      mix sslcerts.renew
+
+  For more information, take a look at [certbot](https://certbot.eff.org/docs/using.html)
 
   For scripting, it is best to use this one, as it will create a certificate if
-  none exist.  Not really sure why you would use `sslcerts create` over `sslcerts renew`,
-  but I will leave it for now.
+  none exist.
 
   This also assumes that `bits` has been installed,
   if that's not the case, then ensure that you first run
 
-      sslcerts install bits
+      mix sslcerts.install bits
 
   ## Available configurations
 
@@ -24,6 +25,7 @@ defmodule Mix.Tasks.Sslcerts.Renew do
     * `--webroot`   The root of your static assets to allow certbot to confirm it's your domain
     * `--ini`       The path of the certbot configs (defaults to /etc/letsencrypt/letsencrypt.ini)
     * `--keysize`   The size of the certificate key (defaults to 4096)
+    * `--post-hook` Any script to run after a successful renewal (See `--renew-hook` in certbot)
 
   """
   def run(args), do: Sslcerts.Cli.Main.run({:create, args})

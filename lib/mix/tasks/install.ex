@@ -6,16 +6,16 @@ defmodule Mix.Tasks.Sslcerts.Install do
   @moduledoc"""
   Install / Initialize your server to generate SSL certs
 
-      sslcerts install
+      mix sslcerts.install
 
   This will install the [bits](https://github.com/capbash/bits) to help with installing other apps,
   as well as certbot itself.  To only install bits, run
 
-      sslcerts install bits
+      mix sslcerts.install bits
 
   And, then to separately install certbot, run
 
-      sslcerts install certbot
+      mix sslcerts.install certbot
 
   ## Available configurations
 

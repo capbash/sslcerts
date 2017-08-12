@@ -6,11 +6,11 @@ defmodule Mix.Tasks.Sslcerts.Create do
   @moduledoc"""
   Create a new certificate
 
-      sslcerts create
+      mix sslcerts.create
 
   This assumes that `bits` has been installed, if that's not the case, then ensure that you first run
 
-      sslcerts install bits
+      mix sslcerts.install bits
 
   ## Available configurations
 
@@ -19,6 +19,7 @@ defmodule Mix.Tasks.Sslcerts.Create do
     * `--webroot`   The root of your static assets to allow certbot to confirm it's your domain
     * `--ini`       The path of the certbot configs (defaults to /etc/letsencrypt/letsencrypt.ini)
     * `--keysize`   The size of the certificate key (defaults to 4096)
+    * `--post-hook` Any script to run after a successful renewal (See `--post-hook` in certbot)
 
   """
   def run(args), do: Sslcerts.Cli.Main.run({:create, args})

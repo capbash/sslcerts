@@ -14,6 +14,7 @@ defmodule Sslcerts.Cli.Config do
     * `webroot` - The root of your static assets to allow certbot to confirm it's your domain
     * `ini`     - The path of the certbot configs (defaults to /etc/letsencrypt/letsencrypt.ini)
     * `keysize` - The size of the certificate key (defaults to 4096)
+    * `post_hook` - The script to run after a successful create/renewal
 
   ## Command line options
 
