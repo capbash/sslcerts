@@ -44,6 +44,7 @@ defmodule Sslcerts.Cli.Create do
            "certbot",
            ["certonly",
             "--non-interactive",
+            "--agree-tos",
             "--post-hook", post_hook || "touch /tmp/certbot.#{domains |> List.first}.created",
             "--config",
             ini])

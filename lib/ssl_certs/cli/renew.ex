@@ -51,6 +51,7 @@ defmodule Sslcerts.Cli.Renew do
            ["certonly",
             "--expand",
             "--keep-until-expiring",
+            "--agree-tos",
             "--non-interactive",
             "--renew-hook", post_hook || "touch /tmp/certbot.#{domains |> List.first}.renewed",
             "--config",
