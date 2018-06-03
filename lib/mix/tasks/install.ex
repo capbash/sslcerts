@@ -3,7 +3,7 @@ defmodule Mix.Tasks.Sslcerts.Install do
 
   @shortdoc "Install / Initialize your server to generate SSL certs"
 
-  @moduledoc"""
+  @moduledoc """
   Install / Initialize your server to generate SSL certs
 
       mix sslcerts.install
@@ -24,8 +24,6 @@ defmodule Mix.Tasks.Sslcerts.Install do
     * `--webroot`   The root of your static assets to allow certbot to confirm it's your domain
     * `--ini`       The path of the certbot configs (defaults to /etc/letsencrypt/letsencrypt.ini)
     * `--keysize`   The size of the certificate key (defaults to 4096)
-
   """
   def run(args), do: Sslcerts.Cli.Main.run({:install, args})
-
 end

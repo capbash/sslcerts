@@ -3,7 +3,7 @@ defmodule Mix.Tasks.Sslcerts.Config do
 
   @shortdoc "Reads, updates or deletes Sslcerts config"
 
-  @moduledoc"""
+  @moduledoc """
   Reads, updates or deletes Sslcerts configuration keys.
 
       mix sslcerts.config KEY [VALUE]
@@ -24,5 +24,4 @@ defmodule Mix.Tasks.Sslcerts.Config do
   """
 
   def run(args), do: Sslcerts.Cli.Main.run({:config, args})
-
 end

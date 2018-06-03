@@ -4,7 +4,7 @@ defmodule Sslcerts.Cli.Install do
   alias Sslcerts.Io.Shell
   alias Sslcerts.Cli.Parser
 
-  @moduledoc"""
+  @moduledoc """
   Install / Initialize your server to generate SSL certs
 
       sslcerts install
@@ -33,11 +33,12 @@ defmodule Sslcerts.Cli.Install do
     domains: :list,
     webroot: :string,
     ini: :string,
-    keysize: :integer,
+    keysize: :integer
   }
 
   def run(raw_args) do
-    Sslcerts.start
+    Sslcerts.start()
+
     raw_args
     |> Parser.parse(@options)
     |> install_script
@@ -49,29 +50,40 @@ defmodule Sslcerts.Cli.Install do
   end
 
   def install_script({opts, ["bits"]}) do
-    {_, 0} = System.cmd("curl", ["-s", "https://raw.githubusercontent.com/capbash/bits/master/bits-installer", "-o", "/tmp/bits-installer.sh"])
+    {_, 0} =
+      System.cmd("curl", [
+        "-s",
+        "https://raw.githubusercontent.com/capbash/bits/master/bits-installer",
+        "-o",
+        "/tmp/bits-installer.sh"
+      ])
+
     File.chmod("/tmp/bits-installer.sh", 755)
+
     System.cmd("/tmp/bits-installer.sh", [])
     |> shell_info(opts)
   end
 
-  def install_script({%{email: email, domains: domains, webroot: webroot, ini: ini, keysize: keysize} = opts, ["certbot"]}) do
+  def install_script(
+        {%{email: email, domains: domains, webroot: webroot, ini: ini, keysize: keysize} = opts,
+         ["certbot"]}
+      ) do
     System.cmd("bits", ["install-if", "certbot"])
     |> shell_info(opts)
 
-    :ok = ini |> Path.expand |> Path.dirname |> File.mkdir_p!
+    :ok = ini |> Path.expand() |> Path.dirname() |> File.mkdir_p!()
 
     ini
-    |> Path.expand
+    |> Path.expand()
     |> File.write!("""
-rsa-key-size = #{keysize}
-email = #{email}
-domains = #{domains |> Enum.join(" ")}
-text = True
-authenticator = webroot
-preferred-challenges = http-01
-webroot-path = #{webroot}
-       """)
+    rsa-key-size = #{keysize}
+    email = #{email}
+    domains = #{domains |> Enum.join(" ")}
+    text = True
+    authenticator = webroot
+    preferred-challenges = http-01
+    webroot-path = #{webroot}
+    """)
 
     Shell.info("Updated certbot #{ini}")
   end

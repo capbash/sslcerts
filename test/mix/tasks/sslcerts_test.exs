@@ -4,8 +4,7 @@ defmodule Mix.Tasks.SslcertsTest do
 
   test "run without args shows help" do
     assert capture_io(fn ->
-      Mix.Tasks.Sslcerts.run([])
-    end) =~ "sslcerts v#{Sslcerts.version}"
+             Mix.Tasks.Sslcerts.run([])
+           end) =~ "sslcerts v#{Sslcerts.version()}"
   end
-
 end

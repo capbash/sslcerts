@@ -3,7 +3,7 @@ defmodule Mix.Tasks.Sslcerts.Renew do
 
   @shortdoc "Renew an existing certificate"
 
-  @moduledoc"""
+  @moduledoc """
   Renew an existing certificate, if no cert exists then create one.
 
       mix sslcerts.renew
@@ -29,5 +29,4 @@ defmodule Mix.Tasks.Sslcerts.Renew do
 
   """
   def run(args), do: Sslcerts.Cli.Main.run({:create, args})
-
 end

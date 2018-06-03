@@ -4,7 +4,7 @@ defmodule Sslcerts.Cli.Create do
   alias Sslcerts.Io.Shell
   alias Sslcerts.Cli.{Parser, Install}
 
-  @moduledoc"""
+  @moduledoc """
   Create a new certificate
 
       sslcerts create
@@ -30,28 +30,31 @@ defmodule Sslcerts.Cli.Create do
     webroot: :string,
     ini: :string,
     keysize: :integer,
-    post_hook: :string,
+    post_hook: :string
   }
 
   def run(raw_args) do
-    Sslcerts.start
+    Sslcerts.start()
     Install.run(["certbot" | raw_args])
 
     raw_args
     |> Parser.parse(@options)
     |> invoke(fn {%{ini: ini, post_hook: post_hook, domains: domains}, []} ->
-         System.cmd(
-           "certbot",
-           ["certonly",
-            "--non-interactive",
-            "--agree-tos",
-            "--post-hook", post_hook || "touch /tmp/certbot.#{domains |> List.first}.created",
-            "--config",
-            ini])
-       end)
+      System.cmd(
+        "certbot",
+        [
+          "certonly",
+          "--non-interactive",
+          "--agree-tos",
+          "--post-hook",
+          post_hook || "touch /tmp/certbot.#{domains |> List.first()}.created",
+          "--config",
+          ini
+        ]
+      )
+    end)
     |> shell_info(raw_args)
   end
 
   def shell_info({output, _}, opts), do: Shell.info(output, opts)
-
 end

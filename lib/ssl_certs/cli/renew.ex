@@ -4,7 +4,7 @@ defmodule Sslcerts.Cli.Renew do
   alias Sslcerts.Io.Shell
   alias Sslcerts.Cli.{Parser, Install}
 
-  @moduledoc"""
+  @moduledoc """
   Renew an existing certificate, if no cert exists then create one.
 
       sslcerts renew
@@ -36,30 +36,33 @@ defmodule Sslcerts.Cli.Renew do
     webroot: :string,
     ini: :string,
     keysize: :integer,
-    post_hook: :string,
+    post_hook: :string
   }
 
   def run(raw_args) do
-    Sslcerts.start
+    Sslcerts.start()
     Install.run(["certbot" | raw_args])
 
     raw_args
     |> Parser.parse(@options)
     |> invoke(fn {%{ini: ini, post_hook: post_hook, domains: domains}, []} ->
-         System.cmd(
-           "certbot",
-           ["certonly",
-            "--expand",
-            "--keep-until-expiring",
-            "--agree-tos",
-            "--non-interactive",
-            "--renew-hook", post_hook || "touch /tmp/certbot.#{domains |> List.first}.renewed",
-            "--config",
-            ini])
-       end)
+      System.cmd(
+        "certbot",
+        [
+          "certonly",
+          "--expand",
+          "--keep-until-expiring",
+          "--agree-tos",
+          "--non-interactive",
+          "--renew-hook",
+          post_hook || "touch /tmp/certbot.#{domains |> List.first()}.renewed",
+          "--config",
+          ini
+        ]
+      )
+    end)
     |> shell_info(raw_args)
   end
 
   def shell_info({output, _}, opts), do: Shell.info(output, opts)
-
 end

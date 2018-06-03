@@ -3,7 +3,7 @@ defmodule Mix.Tasks.Sslcerts do
 
   @shortdoc "Print the help for managing your SSL certifications"
 
-  @moduledoc"""
+  @moduledoc """
   Print the help for managing your SSL certifications
 
        mix sslcerts
@@ -12,5 +12,4 @@ defmodule Mix.Tasks.Sslcerts do
   """
 
   def run(args), do: Sslcerts.Cli.Main.run({:sslcerts, args})
-
 end

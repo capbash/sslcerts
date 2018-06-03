@@ -9,26 +9,34 @@ defmodule Sslcerts.Cli.Main do
   end
 
   def run({:sslcerts, _}) do
-    Shell.info "sslcerts v" <> Sslcerts.version
-    Shell.info "sslcerts allows elixir/phoenix apps to easily create SSL certs (using Let's Encrypt and Certbot)."
-    Shell.newline
+    Shell.info("sslcerts v" <> Sslcerts.version())
 
-    Shell.info "Available tasks:"
-    Shell.newline
+    Shell.info(
+      "sslcerts allows elixir/phoenix apps to easily create SSL certs (using Let's Encrypt and Certbot)."
+    )
+
+    Shell.newline()
+
+    Shell.info("Available tasks:")
+    Shell.newline()
     # Run `mix help --search sslcerts.` to get this output
     # and paste here, replacing `mix sslcerts.` with just `sslcerts `
-    Shell.info "#{Shell.cmd("sslcerts config")}  # Reads, updates or deletes Sslcerts config"
-    Shell.info "#{Shell.cmd("sslcerts create")}  # Create a new certificate"
-    Shell.info "#{Shell.cmd("sslcerts init")}    # Initialize your sslcerts config"
-    Shell.info "#{Shell.cmd("sslcerts install")} # Install / Initialize your server to generate SSL certs"
-    Shell.info "#{Shell.cmd("sslcerts renew")}   # Renew an existing certificate"
+    Shell.info("#{Shell.cmd("sslcerts config")}  # Reads, updates or deletes Sslcerts config")
+    Shell.info("#{Shell.cmd("sslcerts create")}  # Create a new certificate")
+    Shell.info("#{Shell.cmd("sslcerts init")}    # Initialize your sslcerts config")
 
-    Shell.newline
+    Shell.info(
+      "#{Shell.cmd("sslcerts install")} # Install / Initialize your server to generate SSL certs"
+    )
 
-    Shell.info "Further information can be found here:"
-    Shell.info "  -- https://hex.pm/packages/sslcerts"
-    Shell.info "  -- https://github.com/capbash/sslcerts"
-    Shell.newline
+    Shell.info("#{Shell.cmd("sslcerts renew")}   # Renew an existing certificate")
+
+    Shell.newline()
+
+    Shell.info("Further information can be found here:")
+    Shell.info("  -- https://hex.pm/packages/sslcerts")
+    Shell.info("  -- https://github.com/capbash/sslcerts")
+    Shell.newline()
   end
 
   # TODO: consider moving to macro expansion
@@ -37,19 +45,20 @@ defmodule Sslcerts.Cli.Main do
   def run({:install, args}), do: Sslcerts.Cli.Install.run(args)
   def run({:create, args}), do: Sslcerts.Cli.Create.run(args)
   def run({:renew, args}), do: Sslcerts.Cli.Renew.run(args)
+
   def run({unknown_cmd, _args}) do
-    Shell.error "Unknown command, #{unknown_cmd}, check spelling and try again"
-    Shell.newline
-    Shell.newline
+    Shell.error("Unknown command, #{unknown_cmd}, check spelling and try again")
+    Shell.newline()
+    Shell.newline()
     run({:sslcerts, []})
   end
 
   defp parse([]), do: {:sslcerts, []}
+
   defp parse([subcommand | subargs]) do
     subcommand
     |> String.replace(".", "_")
-    |> String.to_atom
+    |> String.to_atom()
     |> invoke({&1, subargs})
   end
-
 end

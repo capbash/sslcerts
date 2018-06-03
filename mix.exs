@@ -12,11 +12,10 @@ defmodule Sslcerts.Mixfile do
     {:httpoison, "~> 0.11.1"},
     {:fn_expr, "~> 0.2"},
     {:version_tasks, "~> 0.10"},
-    {:ex_doc, ">= 0.0.0", only: :dev},
+    {:ex_doc, ">= 0.0.0", only: :dev}
   ]
 
-  @aliases [
-  ]
+  @aliases []
 
   @package [
     name: @app,
@@ -33,37 +32,37 @@ defmodule Sslcerts.Mixfile do
   # ------------------------------------------------------------
 
   def project do
-    in_production = Mix.env == :prod
+    in_production = Mix.env() == :prod
+
     [
-      app:     @app,
+      app: @app,
       version: @version,
-      elixir:  "~> 1.4",
+      elixir: "~> 1.6",
       name: @app,
-      description: "Allows elixir/phoenix apps to easily create SSL certs (using Let's Encrypt and Certbot)",
+      description:
+        "Allows elixir/phoenix apps to easily create SSL certs (using Let's Encrypt and Certbot)",
       package: @package,
       source_url: @git_url,
       homepage_url: @home_url,
-      docs: [main: "Sslcerts",
-             extras: ["README.md"]],
-      build_embedded:  in_production,
-      start_permanent:  in_production,
-      deps:    @deps,
+      docs: [main: "Sslcerts", extras: ["README.md"]],
+      build_embedded: in_production,
+      start_permanent: in_production,
+      deps: @deps,
       aliases: @aliases,
       escript: @escript,
-      elixirc_paths: elixirc_paths(Mix.env),
+      elixirc_paths: elixirc_paths(Mix.env())
     ]
   end
 
   def application do
     [
-      mod: { Sslcerts.Application, [] },
+      mod: {Sslcerts.Application, []},
       extra_applications: [
         :logger
-      ],
+      ]
     ]
   end
 
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
-  defp elixirc_paths(_),     do: ["lib", "web"]
-
+  defp elixirc_paths(_), do: ["lib", "web"]
 end

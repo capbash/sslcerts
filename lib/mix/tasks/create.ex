@@ -3,7 +3,7 @@ defmodule Mix.Tasks.Sslcerts.Create do
 
   @shortdoc "Create a new certificate"
 
-  @moduledoc"""
+  @moduledoc """
   Create a new certificate
 
       mix sslcerts.create
@@ -23,5 +23,4 @@ defmodule Mix.Tasks.Sslcerts.Create do
 
   """
   def run(args), do: Sslcerts.Cli.Main.run({:create, args})
-
 end

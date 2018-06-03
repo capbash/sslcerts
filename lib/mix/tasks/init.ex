@@ -3,7 +3,7 @@ defmodule Mix.Tasks.Sslcerts.Init do
 
   @shortdoc "Initialize your sslcerts config"
 
-  @moduledoc"""
+  @moduledoc """
   Initialize your sslcerts config
 
        mix sslcerts.init
@@ -11,5 +11,4 @@ defmodule Mix.Tasks.Sslcerts.Init do
   See `mix help sslcerts.config` to see all available configuration options.
   """
   def run(args), do: Sslcerts.Cli.Main.run({:init, args})
-
 end

@@ -1,6 +1,5 @@
 defmodule Sslcerts do
-
-  @moduledoc"""
+  @moduledoc """
 
   # Sslcerts
 
@@ -182,23 +181,21 @@ defmodule Sslcerts do
 
   """
 
-  def version(), do: unquote(Mix.Project.config[:version])
-  def elixir_version(), do: unquote(System.version)
+  def version(), do: unquote(Mix.Project.config()[:version])
+  def elixir_version(), do: unquote(System.version())
 
   def start(), do: {:ok, _started} = Application.ensure_all_started(:sslcerts)
 
-
-  @doc"""
+  @doc """
   Retrieve the SSLCERTS configs.
   """
   def config do
     GenServer.call(Sslcerts.Worker, :config)
   end
 
-  @doc"""
+  @doc """
   Reload the SSLCERTS configs from the defaulted location
   """
   def reload, do: GenServer.call(Sslcerts.Worker, :reload)
   def reload(filename), do: GenServer.call(Sslcerts.Worker, {:reload, filename})
-
 end
